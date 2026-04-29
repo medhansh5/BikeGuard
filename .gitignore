@@ -1,0 +1,13 @@
+# Ignore the build directory
+build/
+
+# Ignore Visual Studio temporary files
+.vs/
+out/
+*.user
+*.sln
+*.vcxproj
+
+# Ignore compiled executables
+*.exe
+*.bin"build/" 
