@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Protocols - BikeGuard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/protocol.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-left">
+                <button id="nav-toggle" class="nav-toggle" aria-label="Toggle sidebar">
+                    <span class="nav-toggle-icon">☰</span>
+                </button>
+                <a href="index.html" class="nav-brand">
+                    <div class="nav-dot"></div>
+                    BIKEGUARD
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="../potholenet/index.html" class="nav-link muted">PotholeNet</a>
+                <a href="../shadowmap/index.html" class="nav-link muted">ShadowMap</a>
+                <a href="#" class="nav-link">Repository</a>
+            </div>
+        </div>
+    </nav>
+
+    <aside id="sidebar">
+        <div id="sidebar-toggle">‹</div>
+        <a href="index.html" class="sidebar-logo">
+            <div class="nav-dot"></div>
+            <span class="sidebar-label">BIKEGUARD</span>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link"><span class="sidebar-label">Home</span></a>
+            <a href="protocol.html" class="sidebar-link active"><span class="sidebar-label">Protocol</span></a>
+            <a href="stack.html" class="sidebar-link"><span class="sidebar-label">Stack</span></a>
+            <a href="updates.html" class="sidebar-link"><span class="sidebar-label">Updates</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../potholenet/index.html" class="sidebar-footer-link"><span class="sidebar-label">PotholeNet ↗</span></a>
+            <a href="../shadowmap/index.html" class="sidebar-footer-link"><span class="sidebar-label">ShadowMap ↗</span></a>
+            <a href="#" class="sidebar-footer-link"><span class="sidebar-label">Repository ↗</span></a>
+        </div>
+    </aside>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-eyebrow">SYSTEM PROTOCOLS // 2026</div>
+                <h1 class="hero-title">
+                    Active <span class="gradient-text">Protocols</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Core detection and compliance algorithms powering the BikeGuard enforcement system with real-time processing capabilities.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="card-grid">
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">Helmet Detection</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Advanced computer vision model trained on diverse helmet types and riding conditions. Implements real-time bounding box tracking with vibration compensation algorithms for high-speed two-wheeler environments.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Multi-Class Helmet Recognition</li>
+                            <li>Occlusion Handling Algorithm</li>
+                            <li>Vibration-Stable Tracking</li>
+                            <li>Real-Time Confidence Scoring</li>
+                            <li>Adaptive Lighting Compensation</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">Turban Exemption Logic</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Specialized classification system for religious exemption detection. Implements machine learning model with 94% confidence threshold for Sikh turban identification and automated audit trail generation.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Turban Classification Model</li>
+                            <li>94%+ Confidence Threshold</li>
+                            <li>Override Audit Logging</li>
+                            <li>Regional Exemption Rules</li>
+                            <li>Manual Review Queue</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">Pillion Detection</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Independent rider identification system with seat position analysis and multi-rider event logging. Handles overlapping detection zones and passenger boarding scenarios.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Secondary Rider Identification</li>
+                            <li>Independent Compliance Tracking</li>
+                            <li>Seat Position Classification</li>
+                            <li>Multi-Rider Event Logging</li>
+                            <li>Boarding/Alighting Detection</li>
+                        </ul>
+                    </div>
+
+                    <div class="card card-full">
+                        <h3 style="margin-bottom: 16px;">DirectML Engine</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start;">
+                            <div>
+                                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                                    High-performance GPU acceleration layer utilizing Windows DirectML for real-time inference. Optimized for edge deployment with minimal latency and maximum throughput on supported hardware.
+                                </p>
+                                <ul class="feature-list">
+                                    <li>GPU-Accelerated Inference</li>
+                                    <li>FP16 Precision Optimization</li>
+                                    <li>Windows Native Integration</li>
+                                    <li>Low-Latency Processing Pipeline</li>
+                                </ul>
+                            </div>
+                            <div class="spec-table">
+                                <div class="spec-row">
+                                    <span class="spec-label">RUNTIME</span>
+                                    <span class="spec-value">DirectML</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-label">LANGUAGE</span>
+                                    <span class="spec-value">C++20</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-label">ACCELERATION</span>
+                                    <span class="spec-value">GPU</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-label">PLATFORM</span>
+                                    <span class="spec-value">Windows Native</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-label">PRECISION</span>
+                                    <span class="spec-value">FP16</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/global.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BikeGuard - Real-Time Helmet Compliance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-left">
+                <button id="nav-toggle" class="nav-toggle" aria-label="Toggle sidebar">
+                    <span class="nav-toggle-icon">☰</span>
+                </button>
+                <a href="index.html" class="nav-brand">
+                    <div class="nav-dot"></div>
+                    BIKEGUARD
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="https://medhansh5.github.io/PotholeNet/" class="nav-link muted">PotholeNet</a>
+                <a href="https://medhansh5.github.io/ShadowMap/" class="nav-link muted">ShadowMap</a>
+                <a href="https://github.com/medhansh5/BikeGuard" class="nav-link">Repository</a>
+            </div>
+        </div>
+    </nav>
+
+    <aside id="sidebar">
+        <div id="sidebar-toggle">‹</div>
+        <a href="index.html" class="sidebar-logo">
+            <div class="nav-dot"></div>
+            <span class="sidebar-label">BIKEGUARD</span>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link active"><span class="sidebar-label">Home</span></a>
+            <a href="protocol.html" class="sidebar-link"><span class="sidebar-label">Protocol</span></a>
+            <a href="stack.html" class="sidebar-link"><span class="sidebar-label">Stack</span></a>
+            <a href="updates.html" class="sidebar-link"><span class="sidebar-label">Updates</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="https://medhansh5.github.io/PotholeNet/" class="sidebar-footer-link"><span class="sidebar-label">PotholeNet ↗</span></a>
+            <a href="https://medhansh5.github.io/ShadowMap/" class="sidebar-footer-link"><span class="sidebar-label">ShadowMap ↗</span></a>
+            <a href="https://github.com/medhansh5/BikeGuard" class="sidebar-footer-link"><span class="sidebar-label">Repository ↗</span></a>
+        </div>
+    </aside>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-eyebrow">PROJECT BIKEGUARD // 2026</div>
+                <h1 class="hero-title">
+                    Real-Time Helmet<br><span class="gradient-text">Compliance</span>
+                </h1>
+                <p class="hero-subtitle">
+                    A GPU-accelerated computer vision system for rider safety enforcement, built for high-vibration two-wheeler conditions.
+                </p>
+                <div class="btn-group">
+                    <a href="protocol.html" class="btn btn-primary">View Protocol</a>
+                    <a href="#" class="btn btn-ghost">Source Code</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="full-bleed">
+            <div class="container">
+                <h2 class="gradient-text" style="color: #000; font-size: 2.5rem; margin-bottom: 16px;">Guardian Protocol</h2>
+                <p style="color: rgba(0,0,0,0.7); max-width: 600px; margin-bottom: 48px;">
+                    Live detection system with real-time helmet compliance monitoring, exemption logic, and multi-rider tracking capabilities.
+                </p>
+                
+                <div class="vision-panel">
+                    <div class="vision-header">
+                        <div class="vision-feed">FEED: LIVE</div>
+                        <div style="color: rgba(34,197,94,0.6); font-family: monospace; font-size: 0.75rem;">480×270px</div>
+                    </div>
+                    <div class="vision-canvas" id="visionCanvas">
+                        <svg width="560" height="320" style="position: absolute; top: 0; left: 0;">
+                            <!-- Corner tick marks -->
+                            <path d="M 10 10 L 10 20 M 10 10 L 20 10" stroke="#22C55E" stroke-width="2" fill="none"/>
+                            <path d="M 540 10 L 540 20 M 550 10 L 540 10" stroke="#22C55E" stroke-width="2" fill="none"/>
+                            <path d="M 10 310 L 10 300 M 10 310 L 20 310" stroke="#22C55E" stroke-width="2" fill="none"/>
+                            <path d="M 540 310 L 540 300 M 550 310 L 540 310" stroke="#22C55E" stroke-width="2" fill="none"/>
+                            
+                            <!-- Bounding box -->
+                            <rect id="boundingBox" x="200" y="80" width="160" height="160" 
+                                  stroke="#22C55E" stroke-width="2" fill="none" rx="4"/>
+                            
+                            <!-- Labels -->
+                            <text id="riderLabel" x="210" y="70" fill="#22C55E" font-family="monospace" font-size="12" font-weight="600">RIDER: DETECTED</text>
+                            <text id="helmetLabel" x="210" y="260" fill="#22C55E" font-family="monospace" font-size="12" font-weight="600">HELMET: COMPLIANT</text>
+                            <text id="pillionLabel" x="380" y="70" fill="#22C55E" font-family="monospace" font-size="12" font-weight="600">PILLION: DETECTED</text>
+                            <text id="pillionHelmetLabel" x="380" y="260" fill="#22C55E" font-family="monospace" font-size="12" font-weight="600">HELMET: COMPLIANT</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="gradient-text" style="font-size: 2.5rem; margin-bottom: 48px;">Hardware & Detection</h2>
+                
+                <div class="card-grid-2">
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">The Baron Profile</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Specialized calibration profile for Royal Enfield Classic 350, optimized for high-vibration environments and urban riding conditions. Handles engine harmonics and road surface variations.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Handlebar Mount Configuration</li>
+                            <li>349cc Vibration Compensation</li>
+                            <li>BARON-v1 Calibration Profile</li>
+                            <li>High-Frequency Noise Filter</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">The Baron Rig</h3>
+                        <div style="background: var(--bg-tertiary); border-radius: 12px; height: 240px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
+                            Royal Enfield Classic 350 Test Vehicle
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                            Royal Enfield Classic 350 "The Baron" — BikeGuard primary test vehicle
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="gradient-text" style="font-size: 2.5rem; margin-bottom: 48px;">Compliance Logic</h2>
+                
+                <div class="card-grid-2">
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">Exemption Engine</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Advanced classification system for religious exemptions and special cases. Implements Sikh turban detection with 94% confidence threshold and Class IV vehicle bypass logic.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Turban Classification Model</li>
+                            <li>94%+ Confidence Threshold</li>
+                            <li>Override Audit Logging</li>
+                            <li>Regional Exemption Rules</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">Pillion Detection</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Independent tracking system for secondary riders with seat position classification and multi-rider event logging. Handles overlapping detection zones.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Secondary Rider Identification</li>
+                            <li>Independent Compliance Tracking</li>
+                            <li>Seat Position Classification</li>
+                            <li>Multi-Rider Event Logging</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="full-bleed">
+            <div class="container">
+                <div class="stat-hero">
+                    <div class="stat-number" style="color: #000;">94.7%</div>
+                    <div class="stat-subtext" style="color: rgba(0,0,0,0.7);">
+                        Detection accuracy under high-vibration conditions
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="gradient-text" style="font-size: 2.5rem; margin-bottom: 48px;">System Status</h2>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div style="color: var(--text-primary); font-weight: 600;">BIKEGUARD v0.2.0-alpha</div>
+                        <div class="terminal-badge">QA SUITE: PASSING</div>
+                    </div>
+                    <div class="terminal-content" id="terminalContent">
+                        <!-- Terminal lines will be added by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/global.js"></script>
+    <script src="js/vision.js"></script>
+    <script src="js/terminal.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updates - BikeGuard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/updates.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-left">
+                <button id="nav-toggle" class="nav-toggle" aria-label="Toggle sidebar">
+                    <span class="nav-toggle-icon">☰</span>
+                </button>
+                <a href="index.html" class="nav-brand">
+                    <div class="nav-dot"></div>
+                    BIKEGUARD
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="../potholenet/index.html" class="nav-link muted">PotholeNet</a>
+                <a href="../shadowmap/index.html" class="nav-link muted">ShadowMap</a>
+                <a href="#" class="nav-link">Repository</a>
+            </div>
+        </div>
+    </nav>
+
+    <aside id="sidebar">
+        <div id="sidebar-toggle">‹</div>
+        <a href="index.html" class="sidebar-logo">
+            <div class="nav-dot"></div>
+            <span class="sidebar-label">BIKEGUARD</span>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link"><span class="sidebar-label">Home</span></a>
+            <a href="protocol.html" class="sidebar-link"><span class="sidebar-label">Protocol</span></a>
+            <a href="stack.html" class="sidebar-link"><span class="sidebar-label">Stack</span></a>
+            <a href="updates.html" class="sidebar-link active"><span class="sidebar-label">Updates</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../potholenet/index.html" class="sidebar-footer-link"><span class="sidebar-label">PotholeNet ↗</span></a>
+            <a href="../shadowmap/index.html" class="sidebar-footer-link"><span class="sidebar-label">ShadowMap ↗</span></a>
+            <a href="#" class="sidebar-footer-link"><span class="sidebar-label">Repository ↗</span></a>
+        </div>
+    </aside>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-eyebrow">DEPLOYMENT LOG // 2026</div>
+                <h1 class="hero-title">
+                    Deployment Log & <span class="gradient-text">Releases</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Track BikeGuard's evolution from initial prototype to production-ready enforcement system with real-time helmet compliance detection.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="timeline" id="timeline">
+                    <!-- Timeline items will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/global.js"></script>
+    <script src="js/updates.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Architecture - BikeGuard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/stack.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-left">
+                <button id="nav-toggle" class="nav-toggle" aria-label="Toggle sidebar">
+                    <span class="nav-toggle-icon">☰</span>
+                </button>
+                <a href="index.html" class="nav-brand">
+                    <div class="nav-dot"></div>
+                    BIKEGUARD
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="../potholenet/index.html" class="nav-link muted">PotholeNet</a>
+                <a href="../shadowmap/index.html" class="nav-link muted">ShadowMap</a>
+                <a href="#" class="nav-link">Repository</a>
+            </div>
+        </div>
+    </nav>
+
+    <aside id="sidebar">
+        <div id="sidebar-toggle">‹</div>
+        <a href="index.html" class="sidebar-logo">
+            <div class="nav-dot"></div>
+            <span class="sidebar-label">BIKEGUARD</span>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link"><span class="sidebar-label">Home</span></a>
+            <a href="protocol.html" class="sidebar-link"><span class="sidebar-label">Protocol</span></a>
+            <a href="stack.html" class="sidebar-link active"><span class="sidebar-label">Stack</span></a>
+            <a href="updates.html" class="sidebar-link"><span class="sidebar-label">Updates</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../potholenet/index.html" class="sidebar-footer-link"><span class="sidebar-label">PotholeNet ↗</span></a>
+            <a href="../shadowmap/index.html" class="sidebar-footer-link"><span class="sidebar-label">ShadowMap ↗</span></a>
+            <a href="#" class="sidebar-footer-link"><span class="sidebar-label">Repository ↗</span></a>
+        </div>
+    </aside>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-eyebrow">SYSTEM ARCHITECTURE // 2026</div>
+                <h1 class="hero-title">
+                    System <span class="gradient-text">Architecture</span>
+                </h1>
+                <p class="hero-subtitle">
+                    High-performance technology stack optimized for real-time computer vision and GPU-accelerated inference on Windows native platforms.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="card-grid">
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">C++20</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Modern C++20 implementation leveraging concepts, ranges, and coroutines for efficient memory management and asynchronous processing. Optimized for low-latency real-time applications.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Concepts and Type Constraints</li>
+                            <li>Coroutines for Async Processing</li>
+                            <li>Zero-Copy Memory Management</li>
+                            <li>Compile-Time Optimization</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">DirectML</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Windows-native machine learning inference API providing hardware-accelerated model execution across GPUs, NPUs, and specialized AI accelerators with minimal overhead.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Hardware-Agnostic Acceleration</li>
+                            <li>FP16 Precision Support</li>
+                            <li>Batch Processing Optimization</li>
+                            <li>Dynamic Tensor Operations</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">Windows Native API</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Deep integration with Windows platform APIs for camera capture, system telemetry, and hardware abstraction. Utilizes Media Foundation for high-performance video processing.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Media Foundation Integration</li>
+                            <li>Hardware Camera Control</li>
+                            <li>System Telemetry Access</li>
+                            <li>Native Event Handling</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">GPU Inference Pipeline</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Optimized inference pipeline with parallel processing, memory pooling, and asynchronous execution. Handles multiple concurrent detection tasks with sub-millisecond latency.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Parallel Model Execution</li>
+                            <li>Memory Pool Management</li>
+                            <li>Asynchronous Result Processing</li>
+                            <li>Real-Time Performance Metrics</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px;">OpenCV</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                            Computer vision library for pre-processing, post-processing, and image augmentation. Provides optimized algorithms for edge detection, filtering, and geometric transformations.
+                        </p>
+                        <ul class="feature-list">
+                            <li>GPU-Accelerated Operations</li>
+                            <li>Real-Time Image Processing</li>
+                            <li>Advanced Filtering Algorithms</li>
+                            <li>Geometric Transformations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="full-bleed">
+            <div class="container">
+                <div class="stat-hero">
+                    <div class="stat-number" style="color: #000;">47/47</div>
+                    <div class="stat-subtext" style="color: rgba(0,0,0,0.7);">
+                        QA Tests Passing
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/global.js"></script>
+</body>
+</html>
