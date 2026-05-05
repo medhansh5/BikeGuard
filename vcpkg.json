@@ -31,6 +31,14 @@
     {
       "name": "mfuuid",
       "version>=": "10.0.0"
+    },
+    {
+      "name": "cpr",
+      "version>=": "1.10.0"
+    },
+    {
+      "name": "nlohmann-json",
+      "version>=": "3.11.0"
     }
   ],
   "builtin-baseline": "2024-01-15"

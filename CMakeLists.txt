@@ -58,6 +58,10 @@ endif()
 find_package(OpenCV REQUIRED COMPONENTS world)
 find_package(onnxruntime CONFIG REQUIRED)
 
+# Find HTTP client and JSON libraries for telemetry
+find_package(cpr CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+
 # Windows Media Foundation for camera capture
 if(WIN32)
     find_package(mf REQUIRED)
@@ -73,9 +77,12 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 file(GLOB_RECURSE CORE_SOURCES "src/core/*.cpp" "src/core/*.hpp")
 file(GLOB_RECURSE PLATFORM_SOURCES "src/platform/*.cpp" "src/platform/*.hpp")
 file(GLOB_RECURSE UTILS_SOURCES "src/utils/*.cpp" "src/utils/*.hpp")
+file(GLOB_RECURSE TELEMETRY_SOURCES "src/telemetry/*.cpp" "src/telemetry/*.hpp")
+file(GLOB_RECURSE CALIBRATION_SOURCES "src/calibration/*.cpp" "src/calibration/*.hpp")
+file(GLOB_RECURSE ANALYSIS_SOURCES "src/analysis/*.cpp" "src/analysis/*.hpp")
 file(GLOB_RECURSE HEADERS "include/*.hpp" "include/*.h")
 
-set(ALL_SOURCES ${CORE_SOURCES} ${PLATFORM_SOURCES} ${UTILS_SOURCES})
+set(ALL_SOURCES ${CORE_SOURCES} ${PLATFORM_SOURCES} ${UTILS_SOURCES} ${TELEMETRY_SOURCES} ${CALIBRATION_SOURCES} ${ANALYSIS_SOURCES})
 
 # Create static library for core engine
 add_library(bikeguard_engine STATIC ${ALL_SOURCES} ${HEADERS})
@@ -90,6 +97,8 @@ target_include_directories(bikeguard_engine PUBLIC
 target_link_libraries(bikeguard_engine 
     ${OpenCV_LIBS}
     onnxruntime::onnxruntime
+    cpr::cpr
+    nlohmann_json::nlohmann_json
 )
 
 # Windows-specific libraries for Media Foundation and system APIs
