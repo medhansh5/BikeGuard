@@ -478,6 +478,179 @@ void BikeGuardEngine::enable_vibration_filtering(bool enable) noexcept {
     vibration_filtering_enabled_.store(enable);
 }
 
+// Temporal smoothing state machine implementation
+ComplianceState BikeGuardEngine::update_state(const DetectionResult& current_frame, float current_vibration_hz) {
+    if (!config_.enable_temporal_smoothing) {
+        return current_state_.load();
+    }
+    
+    std::lock_guard<std::mutex> lock(state_mutex_);
+    
+    // Get current timestamp
+    auto now = std::chrono::steady_clock::now();
+    uint64_t timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+    
+    // Vibration override: freeze state if vibration exceeds threshold
+    if (current_vibration_hz > config_.vibration_override_threshold_hz) {
+        state_frozen_.store(true);
+        return current_state_.load();
+    } else {
+        state_frozen_.store(false);
+    }
+    
+    // Determine detection presence for current frame
+    DetectionPresence current_presence = NO_DETECTION;
+    if (current_frame.confidence > config_.confidence_threshold) {
+        if (current_frame.class_id == 3) { // helmet class
+            current_presence = HELMET_DETECTED;
+        } else if (current_frame.class_id == 0) { // person class
+            current_presence = RIDER_DETECTED;
+        }
+    }
+    
+    // Add frame to history
+    frame_history_.add_frame(current_presence, current_frame.confidence, timestamp);
+    
+    ComplianceState new_state = current_state_.load();
+    
+    // State transition logic with hysteresis
+    switch (current_state_.load()) {
+        case ComplianceState::STATE_COMPLIANT:
+            // Transition to VIOLATION only after N consecutive frames with NO_HELMET while RIDER present
+            if (frame_history_.get_recent_count(RIDER_DETECTED, config_.violation_threshold_frames) >= config_.violation_threshold_frames &&
+                frame_history_.get_recent_count(HELMET_DETECTED, config_.violation_threshold_frames) == 0) {
+                new_state = ComplianceState::STATE_VIOLATION;
+                last_state_change_.store(timestamp);
+            }
+            break;
+            
+        case ComplianceState::STATE_VIOLATION:
+            // Transition back to COMPLIANT after M consecutive frames with HELMET detected
+            if (frame_history_.get_recent_count(HELMET_DETECTED, config_.compliance_threshold_frames) >= config_.compliance_threshold_frames) {
+                new_state = ComplianceState::STATE_COMPLIANT;
+                last_state_change_.store(timestamp);
+            }
+            break;
+            
+        case ComplianceState::STATE_TRANSITIONING:
+            // Handle transitional state (if needed)
+            if (frame_history_.get_recent_count(HELMET_DETECTED, 1) > 0) {
+                new_state = ComplianceState::STATE_COMPLIANT;
+            } else if (frame_history_.get_recent_count(RIDER_DETECTED, 3) >= 3) {
+                new_state = ComplianceState::STATE_VIOLATION;
+            }
+            last_state_change_.store(timestamp);
+            break;
+    }
+    
+    // Update stable detections based on new state
+    if (new_state != current_state_.load()) {
+        current_state_.store(new_state);
+        
+        // Update stable detections when state changes
+        if (new_state == ComplianceState::STATE_COMPLIANT) {
+            // Find the most recent helmet detection
+            for (size_t i = 0; i < frame_history_.frame_count; ++i) {
+                size_t index = (frame_history_.current_index - 1 - i + FrameHistory::HISTORY_SIZE) % FrameHistory::HISTORY_SIZE;
+                if (frame_history_.detections[index] == HELMET_DETECTED) {
+                    // Create stable detection from history
+                    stable_detections_.clear();
+                    stable_detections_.emplace_back(frame_history_.confidences[index], 3, current_frame.bbox, "helmet");
+                    break;
+                }
+            }
+        } else {
+            // Clear stable detections for violation state
+            stable_detections_.clear();
+            
+            // Submit telemetry event for violation (non-blocking)
+            if (telemetry_enabled_.load() && telemetry_dispatcher_) {
+                TelemetryEvent event("HELMET_VIOLATION", 3, current_vibration_hz, current_frame.confidence);
+                telemetry_dispatcher_->submit_event(event);
+            }
+        }
+    }
+    
+    return new_state;
+}
+
+ComplianceState BikeGuardEngine::get_compliance_state() const noexcept {
+    return current_state_.load();
+}
+
+std::vector<DetectionResult> BikeGuardEngine::get_stable_detections() const noexcept {
+    std::lock_guard<std::mutex> lock(state_mutex_);
+    return stable_detections_;
+}
+
+void BikeGuardEngine::reset_state_machine() noexcept {
+    std::lock_guard<std::mutex> lock(state_mutex_);
+    frame_history_.reset();
+    current_state_.store(ComplianceState::STATE_COMPLIANT);
+    stable_detections_.clear();
+    state_frozen_.store(false);
+    last_state_change_.store(0);
+}
+
+// Telemetry dispatcher integration
+void BikeGuardEngine::set_telemetry_dispatcher(std::unique_ptr<TelemetryDispatcher> dispatcher) {
+    telemetry_dispatcher_ = std::move(dispatcher);
+}
+
+void BikeGuardEngine::enable_telemetry(bool enable) noexcept {
+    telemetry_enabled_.store(enable);
+}
+
+bool BikeGuardEngine::is_telemetry_enabled() const noexcept {
+    return telemetry_enabled_.load();
+}
+
+// Calibration integration
+bool BikeGuardEngine::load_calibration_config() {
+    try {
+        std::ifstream file("config/calibration_config.json");
+        if (!file.is_open()) {
+            std::cout << "No calibration config found, using defaults.\n";
+            return false;
+        }
+        
+        nlohmann::json json;
+        file >> json;
+        
+        if (json.contains("exclusion_y_coordinate") && json.contains("camera_height")) {
+            int y_coord = json["exclusion_y_coordinate"];
+            int height = json["camera_height"];
+            calibration_loaded_ = true;
+            
+            // Create exclusion zone rectangle
+            exclusion_zone_ = cv::Rect(0, y_coord, config_.input_size.width, height - y_coord);
+            
+            std::cout << "Calibration loaded: Exclusion zone at Y=" << y_coord << '\n';
+            return true;
+        }
+        
+        return false;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Failed to load calibration config: " << e.what() << '\n';
+        return false;
+    }
+}
+
+void BikeGuardEngine::apply_calibration_exclusion(cv::Mat& frame) const {
+    if (!calibration_loaded_ || exclusion_zone_.area() == 0) {
+        return;
+    }
+    
+    // Apply exclusion zone - set to black to prevent false detections
+    cv::Mat roi = frame(exclusion_zone_);
+    roi.setTo(cv::Scalar(0, 0, 0));
+}
+
+cv::Rect BikeGuardEngine::get_exclusion_zone() const {
+    return exclusion_zone_;
+}
+
 // GPU management
 bool BikeGuardEngine::is_gpu_available() const noexcept {
     return gpu_available_.load();
