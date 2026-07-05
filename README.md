@@ -19,6 +19,19 @@ Geometric Density Check → Async Telemetry → Compliance Enforcement
 - **Networking**: Asynchronous HTTP client with automatic retry logic
 - **Build System**: CMake with vcpkg dependency management
 
+## What's New in v1.2.0 GA (Enterprise Road Engine & Architecture Overhaul)
+
+### Enterprise Road Engine Architecture & Pipeline Unification
+Resolved critical LNK2019 architectural gaps by implementing the complete lifecycle and processing pipeline in `src/road/bikeguard_road_engine.cpp`.
+- **9-Stage Physical AI Pipeline**: Orchestrates real-time CLAHE contrast enhancement, dust inpainting, FFT vibration filtering, DirectML neural inference, pediatric pillion safety sorting (<4Y stature analysis), Sikh Turban cultural exemption recognition, ALPR HSRP regex verification, kinematic optical flow speed estimation (km/h), and 256-bit cryptographic SHA-256 audit logging.
+- **Utility & Factory Implementation**: Fully implemented all `create_...()` factory functions and `road_utils::...` algorithms (`calculate_compliance_rate`, `estimate_road_conditions`, `validate_detection_quality`).
+
+### Interactive Live Streaming & Enterprise HUD Overhaul
+Upgraded `src/main.cpp` to unleash the full enterprise suite by default.
+- **Command-Line Interface**: Added `--road` / `--basic` flags and `--port <N>` configuration (defaulting to port `8080`).
+- **Embedded Web Dashboard**: Automatically launches the Winsock2 multi-threaded HTTP server streaming live MJPEG video (`multipart/x-mixed-replace`) and serving real-time JSON status updates to an interactive web dashboard (`http://localhost:8080`).
+- **Rich On-Screen Annotations**: Renders vehicle speed (km/h), ALPR registration plates, pediatric passenger warnings, and SHA-256 hash indicators directly onto the OpenCV video feed.
+
 ## What's New in v1.1.0 GA (Enterprise Physical AI Ecosystem)
 
 ### Indian ALPR & HSRP License Plate Recognition Engine
@@ -187,6 +200,11 @@ BikeGuard.exe --benchmark
 
 ## Changelog & Release History
 
+### [v1.2.0] - 2026-07-05 (General Availability - Enterprise Road Engine & Architecture Overhaul)
+#### Added
+- **Enterprise Road Engine (`src/road/bikeguard_road_engine.cpp`)**: Full implementation of `BikeGuardRoadEngine` and `road_utils::...`, unifying all 9 subsystems into a 9-stage Physical AI road pipeline.
+- **Main Application Overhaul (`src/main.cpp`)**: Added `--road` and `--port <N>` CLI options, enabled embedded HTTP/WebSocket streamer on port 8080 by default, and integrated rich HUD annotations (speed, ALPR, pediatric warnings, SHA-256 hashes).
+
 ### [v1.1.0] - 2026-07-05 (General Availability - Enterprise Physical AI Ecosystem)
 #### Added
 - **Indian ALPR & HSRP Recognition Engine (`src/analysis/alpr_engine.cpp`)**: Automated license plate localization, morphological mud cleaning, and Indian State RTO regex validation.
@@ -223,5 +241,5 @@ BikeGuard.exe --benchmark
 
 ---
 
-**BikeGuard v1.1.0 GA** - Production-Ready Physical AI Safety System  
+**BikeGuard v1.2.0 GA** - Production-Ready Physical AI Safety System  
 *Engineered for Indian road conditions with enterprise-grade reliability*
