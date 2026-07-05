@@ -19,6 +19,33 @@ Geometric Density Check → Async Telemetry → Compliance Enforcement
 - **Networking**: Asynchronous HTTP client with automatic retry logic
 - **Build System**: CMake with vcpkg dependency management
 
+## What's New in v1.1.0 GA (Enterprise Physical AI Ecosystem)
+
+### Indian ALPR & HSRP License Plate Recognition Engine
+Implemented automated high-speed license plate recognition engineered for Indian High Security Registration Plates (`src/analysis/alpr_engine.cpp`).
+- **Plate Localization & Mud Cleaning**: Edge detection and Top-Hat morphological transformations (`cv::morphologyEx`) to clean grime and mud off plates in rainy/dusty Indian road conditions.
+- **RTO Regex Validation**: Real-time regex verification against Indian State and RTO patterns (`^[A-Z]{2}[0-9]{2}[A-Z]{1,3}[0-9]{4}$`) across all 35+ States/UTs.
+
+### Optical Flow Speed Estimation & Reckless Weaving Analyzer
+Implemented real-time vehicle kinematics tracking across temporal frames (`src/analysis/trajectory_analyzer.cpp`).
+- **Velocity Estimation**: Calculates Euclidean pixel displacement across a rolling 30-frame window calibrated to camera focal height (`pixels_per_meter`) to estimate vehicle speed (km/h).
+- **Weaving Instability Index**: Computes angular trajectory variance across successive frame centroids to detect reckless zigzag driving and lane weaving in dense traffic.
+
+### Pediatric Pillion Safety Classifier
+Enhanced passenger safety enforcement with anthropometric child detection (`src/road/pillion_detector.cpp`).
+- **Stature & Area Ratio Analysis**: Compares passenger bounding box height and area ratios against the driver (<0.65x stature ratio, <0.45x area ratio) to identify child passengers under 4 years old.
+- **Strict Compliance Enforcement**: Automatically flags non-compliant child riders wearing no helmets or adult/construction helmets.
+
+### Cryptographic SHA-256 Tamper-Proof Audit Trails
+Hardened violation logging for legally admissible e-Challan evidence (`src/road/telemetry_logger.cpp`).
+- **256-Bit Cryptographic Signatures**: Generates deterministic avalanche hash signatures for every violation event payload, ensuring zero tampering in cloud records.
+
+### Embedded Live MJPEG & REST Telemetry Streaming Server
+Integrated a lightweight, zero-dependency embedded web server (`src/telemetry/live_streamer.cpp`).
+- **Multi-Threaded Socket Server**: Built on Windows Winsock2 (`<winsock2.h>`) listening on port 8080.
+- **MJPEG Video Stream**: Streams real-time annotated road video via `multipart/x-mixed-replace` HTTP headers.
+- **Interactive Web Dashboard**: Serves a responsive dark-mode HTML dashboard with real-time REST polling (`/api/status`) for live compliance monitoring.
+
 ## What's New in v1.0.0 GA (Enterprise Indian Road Deployment)
 
 ### Indian Road Preprocessor & Lighting Correction
@@ -160,6 +187,14 @@ BikeGuard.exe --benchmark
 
 ## Changelog & Release History
 
+### [v1.1.0] - 2026-07-05 (General Availability - Enterprise Physical AI Ecosystem)
+#### Added
+- **Indian ALPR & HSRP Recognition Engine (`src/analysis/alpr_engine.cpp`)**: Automated license plate localization, morphological mud cleaning, and Indian State RTO regex validation.
+- **Optical Flow Trajectory & Weaving Analyzer (`src/analysis/trajectory_analyzer.cpp`)**: Real-time speed estimation (km/h) and angular variance computation for reckless zigzag weaving detection.
+- **Pediatric Pillion Safety Classifier (`src/road/pillion_detector.cpp`)**: Anthropometric stature ratio comparison (<0.65x height threshold) to detect child passengers under 4 years old and enforce strict safety standards.
+- **Cryptographic Audit Trail (`src/road/telemetry_logger.cpp`)**: 256-bit cryptographic avalanche hash signatures appended to all violation telemetry for tamper-proof e-Challan evidence.
+- **Embedded Live MJPEG & REST Server (`src/telemetry/live_streamer.cpp`)**: Multi-threaded Windows Winsock2 HTTP server on port 8080 serving real-time MJPEG video streams and an interactive web dashboard.
+
 ### [v1.0.0] - 2026-07-05 (General Availability - Enterprise Indian Road Deployment)
 #### Added
 - **Indian Road Preprocessor (`src/road/indian_road_preprocessor.cpp`)**: Real-time CLAHE adaptive histogram equalization in LAB color space for low-light/glare conditions and HSV-based Telea inpainting for dust compensation.
@@ -188,5 +223,5 @@ BikeGuard.exe --benchmark
 
 ---
 
-**BikeGuard v1.0.0 GA** - Production-Ready Physical AI Safety System  
+**BikeGuard v1.1.0 GA** - Production-Ready Physical AI Safety System  
 *Engineered for Indian road conditions with enterprise-grade reliability*

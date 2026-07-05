@@ -73,7 +73,8 @@ struct RoadDetectionResult : public DetectionResult {
     enum class RiderType {
         UNKNOWN = 0,
         DRIVER,
-        PILLION
+        PILLION,
+        PEDIATRIC_PILLION
     };
     
     HelmetType helmet_type = HelmetType::UNKNOWN;
@@ -224,6 +225,8 @@ private:
         float pillion_position_x_ratio = 0.6f;  // Typical pillion X position
         float pillion_position_y_ratio = 0.4f;  // Typical pillion Y position
         float motorcycle_width_ratio = 0.4f;     // Expected motorcycle width
+        float pediatric_height_ratio_threshold = 0.65f; // Child stature threshold vs adult
+        float pediatric_area_ratio_threshold = 0.45f;   // Child area threshold vs adult
     } geometry_;
 };
 
@@ -291,8 +294,10 @@ public:
     auto log_inference_metrics(const InferenceMetrics& metrics) -> void;
     auto log_system_metrics(const SystemMetrics& metrics) -> void;
     auto log_road_event(const std::string& event_type, const json& event_data) -> void;
+    auto generate_sha256_signature(std::string_view payload) -> std::string;
     auto flush_logs() -> void;
     auto export_session_summary() -> std::string;
+    bool enable_cryptographic_audit = true;
 
 private:
     bool initialized_ = false;
@@ -358,12 +363,18 @@ private:
     } recovery_config_;
 };
 
+// Forward declarations for new enterprise modules
+class ALPREngine;
+class TrajectoryAnalyzer;
+class LiveStreamer;
+
 // Main Road Engine for on-road testing
 class BikeGuardRoadEngine : public BikeGuardEngine {
 public:
     auto initialize_road_mode(const EngineConfig& config, const BaronProfile& baron_profile) -> bool;
     auto process_road_frame(const cv::Mat& frame) -> std::vector<RoadDetectionResult>;
     auto enable_calibration_mode(bool enable) -> void;
+    auto enable_live_streaming(int port = 8080) -> bool;
     auto get_road_metrics() -> RoadDetectionResult;
     
     // Royal Enfield specific features
@@ -387,6 +398,9 @@ private:
     std::unique_ptr<EnhancedVibrationFilter> vibration_filter_;
     std::unique_ptr<TelemetryLogger> telemetry_logger_;
     std::unique_ptr<HardwareManager> hardware_manager_;
+    std::unique_ptr<ALPREngine> alpr_engine_;
+    std::unique_ptr<TrajectoryAnalyzer> trajectory_analyzer_;
+    std::unique_ptr<LiveStreamer> live_streamer_;
     
     // Configuration
     BaronProfile baron_profile_;

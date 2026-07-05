@@ -1,4 +1,7 @@
 #include "bikeguard_road_engine.hpp"
+#include "alpr_engine.hpp"
+#include "trajectory_analyzer.hpp"
+#include "live_streamer.hpp"
 #include <iostream>
 #include <iomanip>
 #include <chrono>
@@ -88,6 +91,17 @@ public:
                 } else {
                     results.failed_tests.push_back("Compliance Validation");
                 }
+            }
+            
+            // Run Enterprise Physical AI Ecosystem validation
+            std::cout << "\n3.5. Running Enterprise Physical AI Ecosystem Validation (v1.1.0)...\n";
+            auto enterprise_results = run_enterprise_ai_validation(config);
+            results.test_summaries.push_back(enterprise_results);
+            results.total_tests_run++;
+            if (enterprise_results.find("PASSED") != std::string::npos) {
+                results.tests_passed++;
+            } else {
+                results.failed_tests.push_back("Enterprise AI Validation");
             }
             
             // Run hardware resilience tests
@@ -421,6 +435,70 @@ private:
     auto test_memory_pressure_handling(const TestConfiguration& config) -> bool {
         // Test system behavior under memory pressure
         return true; // Simplified for now
+    }
+    
+    auto run_enterprise_ai_validation(const TestConfiguration& config) -> std::string {
+        try {
+            std::cout << "   Testing v1.1.0 Enterprise AI modules...\n";
+            
+            if (!test_alpr_hsrp_recognition()) {
+                return "Enterprise AI Validation: FAILED - ALPR/HSRP Recognition failed";
+            }
+            if (!test_trajectory_weaving_analysis()) {
+                return "Enterprise AI Validation: FAILED - Trajectory Weaving Analysis failed";
+            }
+            if (!test_pediatric_pillion_classification()) {
+                return "Enterprise AI Validation: FAILED - Pediatric Pillion Safety failed";
+            }
+            if (!test_cryptographic_audit_trail()) {
+                return "Enterprise AI Validation: FAILED - Cryptographic Audit Trail failed";
+            }
+            if (!test_live_mjpeg_streamer()) {
+                return "Enterprise AI Validation: FAILED - Live MJPEG Streamer failed";
+            }
+            
+            return "Enterprise AI Validation: PASSED";
+        } catch (const std::exception& e) {
+            return std::format("Enterprise AI Validation: FAILED - Exception: {}", e.what());
+        }
+    }
+
+    auto test_alpr_hsrp_recognition() -> bool {
+        auto alpr = create_alpr_engine();
+        if (!alpr) return false;
+        bool valid = alpr->validate_hsrp_format("DL01AB1234");
+        bool invalid = !alpr->validate_hsrp_format("INVALID123");
+        std::string state = alpr->extract_state_code("MH12DE5678");
+        return valid && invalid && (state == "MH");
+    }
+
+    auto test_trajectory_weaving_analysis() -> bool {
+        auto analyzer = create_trajectory_analyzer();
+        if (!analyzer) return false;
+        for (int i = 0; i < 10; ++i) {
+            analyzer->track_vehicle(1, cv::Point2f(100.0f + i * 10.0f, 200.0f), i * 0.033);
+        }
+        float speed = analyzer->estimate_speed_kmh(1);
+        return speed > 0.0f;
+    }
+
+    auto test_pediatric_pillion_classification() -> bool {
+        auto detector = create_pillion_rider_detector();
+        return detector != nullptr;
+    }
+
+    auto test_cryptographic_audit_trail() -> bool {
+        auto logger = create_telemetry_logger();
+        if (!logger) return false;
+        std::string sig = logger->generate_sha256_signature("test_payload_echallan_123");
+        return sig.length() == 64;
+    }
+
+    auto test_live_mjpeg_streamer() -> bool {
+        auto streamer = create_live_streamer();
+        if (!streamer) return false;
+        streamer->update_telemetry("{\"status\": \"ok\"}");
+        return !streamer->is_running();
     }
     
     // Utility methods

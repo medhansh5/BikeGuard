@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(BikeGuard VERSION 1.0.0 LANGUAGES CXX)
+project(BikeGuard VERSION 1.1.0 LANGUAGES CXX)
 
 # C++20 standard with Windows optimizations
 set(CMAKE_CXX_STANDARD 20)
@@ -80,9 +80,11 @@ file(GLOB_RECURSE UTILS_SOURCES "src/utils/*.cpp" "src/utils/*.hpp")
 file(GLOB_RECURSE TELEMETRY_SOURCES "src/telemetry/*.cpp" "src/telemetry/*.hpp")
 file(GLOB_RECURSE CALIBRATION_SOURCES "src/calibration/*.cpp" "src/calibration/*.hpp")
 file(GLOB_RECURSE ANALYSIS_SOURCES "src/analysis/*.cpp" "src/analysis/*.hpp")
+file(GLOB_RECURSE ROAD_SOURCES "src/road/*.cpp" "src/road/*.hpp")
+file(GLOB_RECURSE QA_SOURCES "src/qa/*.cpp" "src/qa/*.hpp")
 file(GLOB_RECURSE HEADERS "include/*.hpp" "include/*.h")
 
-set(ALL_SOURCES ${CORE_SOURCES} ${PLATFORM_SOURCES} ${UTILS_SOURCES} ${TELEMETRY_SOURCES} ${CALIBRATION_SOURCES} ${ANALYSIS_SOURCES})
+set(ALL_SOURCES ${CORE_SOURCES} ${PLATFORM_SOURCES} ${UTILS_SOURCES} ${TELEMETRY_SOURCES} ${CALIBRATION_SOURCES} ${ANALYSIS_SOURCES} ${ROAD_SOURCES} ${QA_SOURCES})
 
 # Create static library for core engine
 add_library(bikeguard_engine STATIC ${ALL_SOURCES} ${HEADERS})
@@ -126,6 +128,7 @@ if(WIN32)
         
         # Windows Runtime
         runtimeobject
+        ws2_32
     )
     
     # Windows-specific compile definitions

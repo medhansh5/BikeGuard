@@ -119,7 +119,15 @@ auto PillionRiderDetector::analyze_rider_positions(std::span<const DetectionResu
                 
                 // Validate pillion position
                 if (is_valid_pillion_position(normalized_x, normalized_y)) {
-                    analyzed_result.rider_type = RoadDetectionResult::RiderType::PILLION;
+                    const auto& driver_detection = detections[rider_centers[0].second];
+                    float height_ratio = static_cast<float>(detection.bbox.height) / static_cast<float>(driver_detection.bbox.height);
+                    float area_ratio = static_cast<float>(detection.bbox.area()) / static_cast<float>(driver_detection.bbox.area());
+                    
+                    if (height_ratio < geometry_.pediatric_height_ratio_threshold || area_ratio < geometry_.pediatric_area_ratio_threshold) {
+                        analyzed_result.rider_type = RoadDetectionResult::RiderType::PEDIATRIC_PILLION;
+                    } else {
+                        analyzed_result.rider_type = RoadDetectionResult::RiderType::PILLION;
+                    }
                 } else {
                     // Might be a different scenario (multiple motorcycles, etc.)
                     analyzed_result.rider_type = RoadDetectionResult::RiderType::UNKNOWN;
@@ -152,8 +160,9 @@ auto PillionRiderDetector::analyze_rider_positions(std::span<const DetectionResu
 }
 
 auto PillionRiderDetector::check_pillion_compliance(const RoadDetectionResult& pillion) -> bool {
-    if (pillion.rider_type != RoadDetectionResult::RiderType::PILLION) {
-        return true; // Not a pillion, so no pillion-specific compliance needed
+    if (pillion.rider_type != RoadDetectionResult::RiderType::PILLION &&
+        pillion.rider_type != RoadDetectionResult::RiderType::PEDIATRIC_PILLION) {
+        return true; // Not a pillion or pediatric pillion, so no pillion-specific compliance needed
     }
     
     try {
@@ -393,7 +402,11 @@ private:
             // Left side - typically driver (in right-hand traffic countries)
             return RoadDetectionResult::RiderType::DRIVER;
         } else if (relative_x > 0.1f) {
-            // Right side - typically pillion
+            // Right side - typically pillion (check for pediatric passenger height bounds)
+            float rider_height_ratio = static_cast<float>(rider.rider_bbox.height) / static_cast<float>(motorcycle.motorcycle_bbox.height);
+            if (rider_height_ratio < 0.45f) {
+                return RoadDetectionResult::RiderType::PEDIATRIC_PILLION;
+            }
             return RoadDetectionResult::RiderType::PILLION;
         } else {
             // Center - ambiguous
